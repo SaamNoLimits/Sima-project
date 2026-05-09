@@ -1,0 +1,4 @@
+# Optional — only needed if your model is a fastai .pkl (e.g. from a Kaggle notebook).
+# Install AFTER `pip install -r requirements.txt`:
+#     pip install -r requirements-fastai.txt
+fastai>=2.7.0

@@ -59,12 +59,32 @@ brain_tumor_app/
     └── distribution.png
 ```
 
-## ⚡ Installation rapide
+## ⚡ Démarrage rapide
 
-### 1. Cloner et installer les dépendances
+### 🪟 Windows — un seul clic
+
+Pré-requis : [Python 3.10+](https://python.org/downloads) (cocher **"Add Python to PATH"**) · [Node.js 18+](https://nodejs.org).
+
+```cmd
+git clone https://github.com/SaamNoLimits/Sima-project.git
+cd Sima-project
+start.bat
+```
+
+Double-cliquez `start.bat` — le script crée le venv, installe PyTorch CPU + fastai + le frontend (5–15 min la première fois), lance le backend sur :8000 et le frontend sur :5173, puis ouvre le navigateur. Les exécutions suivantes lancent la stack en quelques secondes.
+
+### 🐧 Linux / macOS — un seul script
 
 ```bash
-cd brain_tumor_app
+git clone https://github.com/SaamNoLimits/Sima-project.git
+cd Sima-project
+./start.sh
+```
+
+### 🛠 Installation manuelle
+
+```bash
+cd Sima-project
 pip install -r requirements.txt
 ```
 

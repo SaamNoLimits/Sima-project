@@ -1,10 +1,14 @@
 @echo off
 REM ════════════════════════════════════════════════════════════════════════
-REM  NeuroVista — Windows one-click installer + launcher
-REM  Double-click this file (or run from cmd) to install everything on first
-REM  run and launch the stack on every run.
+REM  NeuroVista — Windows one-click installer + launcher  (NO Node.js needed)
 REM
-REM  Requires : Python 3.10+ (https://python.org)  ·  Node.js 18+ (https://nodejs.org)
+REM  This script only requires Python 3.10+. The React UI is served by the
+REM  FastAPI backend as pre-built static files (frontend/dist/, shipped in
+REM  the repo). Everything runs on a single port: http://localhost:8000
+REM
+REM  Usage : double-click start.bat (or run from cmd in this folder).
+REM  Pre-req: Python 3.10+  -->  https://python.org/downloads
+REM           (tick "Add Python to PATH" during install)
 REM ════════════════════════════════════════════════════════════════════════
 
 setlocal enabledelayedexpansion
@@ -12,7 +16,7 @@ cd /d "%~dp0"
 
 echo.
 echo ============================================================
-echo   NeuroVista — Brain Tumor MRI Classifier
+echo   NeuroVista - Brain Tumor MRI Classifier
 echo ============================================================
 echo.
 
@@ -25,19 +29,9 @@ if errorlevel 1 (
     pause & exit /b 1
 )
 for /f "delims=" %%v in ('python --version') do echo [OK] %%v
-
-REM ── 2. Node check ───────────────────────────────────────────────────────
-where node >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] Node.js is not installed or not in PATH.
-    echo         Install Node.js 18+ from https://nodejs.org
-    pause & exit /b 1
-)
-for /f "delims=" %%v in ('node --version') do echo [OK] Node %%v
-
 echo.
 
-REM ── 3. Create venv if missing ───────────────────────────────────────────
+REM ── 2. Create venv if missing ───────────────────────────────────────────
 if not exist ".venv\Scripts\python.exe" (
     echo --^> Creating Python virtual environment .venv ...
     python -m venv .venv
@@ -47,7 +41,7 @@ if not exist ".venv\Scripts\python.exe" (
     )
 )
 
-REM ── 4. Install Python deps if fastai missing ────────────────────────────
+REM ── 3. Install Python deps if fastai missing ────────────────────────────
 .venv\Scripts\python -c "import fastai" >nul 2>&1
 if errorlevel 1 (
     echo --^> Installing PyTorch CPU + fastai + FastAPI ^(takes 5-15 min on first run^)...
@@ -60,52 +54,27 @@ if errorlevel 1 (
     echo [OK] Python dependencies already installed.
 )
 
-REM ── 5. Install npm deps if missing ──────────────────────────────────────
-if not exist "frontend\node_modules" (
-    echo --^> Installing frontend dependencies ^(npm install^)...
-    pushd frontend
-    call npm install --silent
-    if errorlevel 1 (
-        echo [ERROR] npm install failed. Aborting.
-        popd & pause & exit /b 1
-    )
-    popd
-    echo [OK] Frontend dependencies installed.
+REM ── 4. Sanity-check the pre-built UI ─────────────────────────────────────
+if not exist "frontend\dist\index.html" (
+    echo [WARN] frontend\dist\ is missing. The app may not render the UI.
+    echo        If you have Node.js, run:  cd frontend ^&^& npm install ^&^& npm run build
 ) else (
-    echo [OK] Frontend dependencies already installed.
+    echo [OK] Built UI present in frontend\dist\.
 )
 
 echo.
 echo ============================================================
-echo   Launching the stack
+echo   Launching NeuroVista
 echo ============================================================
 echo.
-
-REM ── 6. Start backend in new window ──────────────────────────────────────
-echo --^> Starting backend on http://localhost:8000 ...
-start "NeuroVista API"  cmd /k ".venv\Scripts\python -m uvicorn backend.main:app --port 8000 --host 127.0.0.1"
-
-REM ── 7. Wait briefly for backend to bind ─────────────────────────────────
-timeout /t 3 /nobreak >nul
-
-REM ── 8. Start frontend in new window ─────────────────────────────────────
-echo --^> Starting frontend on http://localhost:5173 ...
-start "NeuroVista UI"   cmd /k "cd frontend && npm run dev"
-
-REM ── 9. Wait then open browser ───────────────────────────────────────────
-timeout /t 4 /nobreak >nul
-echo --^> Opening browser...
-start http://localhost:5173
-
+echo   The browser will open at http://localhost:8000
+echo   (UI + API both served from this single port)
 echo.
-echo ============================================================
-echo   Running !
-echo ============================================================
-echo   - Frontend : http://localhost:5173
-echo   - Backend  : http://localhost:8000
-echo   - API docs : http://localhost:8000/docs
-echo ------------------------------------------------------------
-echo  To STOP : close the two terminal windows that just opened.
-echo ============================================================
+echo   To STOP : press Ctrl+C in this window, or close it.
 echo.
-pause
+
+REM ── 5. Open browser after a short delay (background) ────────────────────
+start /b "" cmd /c "timeout /t 4 /nobreak >nul && start http://localhost:8000"
+
+REM ── 6. Run uvicorn in foreground so Ctrl+C stops the whole stack ────────
+.venv\Scripts\python -m uvicorn backend.main:app --port 8000 --host 127.0.0.1

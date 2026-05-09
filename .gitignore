@@ -14,8 +14,9 @@ ENV/
 
 # ── Node / Vite ──────────────────────────────────────────────────────────
 node_modules/
-frontend/dist/
 frontend/.vite/
+# frontend/dist/ is intentionally tracked so Windows users without Node can
+# still run the app (FastAPI serves it as static files).
 *.log
 npm-debug.log*
 yarn-debug.log*

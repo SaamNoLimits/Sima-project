@@ -61,9 +61,9 @@ brain_tumor_app/
 
 ## ⚡ Démarrage rapide
 
-### 🪟 Windows — un seul clic
+### 🪟 Windows — un seul clic (Python suffit, pas besoin de Node.js)
 
-Pré-requis : [Python 3.10+](https://python.org/downloads) (cocher **"Add Python to PATH"**) · [Node.js 18+](https://nodejs.org).
+**Pré-requis unique : [Python 3.10+](https://python.org/downloads)** — cocher *"Add Python to PATH"* lors de l'installation.
 
 ```cmd
 git clone https://github.com/SaamNoLimits/Sima-project.git
@@ -71,7 +71,13 @@ cd Sima-project
 start.bat
 ```
 
-Double-cliquez `start.bat` — le script crée le venv, installe PyTorch CPU + fastai + le frontend (5–15 min la première fois), lance le backend sur :8000 et le frontend sur :5173, puis ouvre le navigateur. Les exécutions suivantes lancent la stack en quelques secondes.
+Double-cliquez `start.bat`. Le script :
+1. Crée un environnement virtuel `.venv\` si absent
+2. Installe PyTorch CPU + fastai + FastAPI (5–15 min la **première** fois ; instantané ensuite)
+3. Lance le serveur unique sur **http://localhost:8000** (l'UI React pré-construite est servie par FastAPI directement — un seul port, pas de Node.js requis)
+4. Ouvre le navigateur
+
+Pour arrêter : Ctrl+C dans la fenêtre, ou la fermer.
 
 ### 🐧 Linux / macOS — un seul script
 

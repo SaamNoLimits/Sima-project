@@ -223,11 +223,55 @@ async def predict(file: UploadFile = File(...), gradcam: bool = True):
     }
 
 
-@app.get("/")
-def root():
+@app.get("/api")
+def api_root():
     return {
-        "service": "Brain Tumor MRI Classifier API",
+        "service": "NeuroVista API",
         "docs": "/docs",
         "health": "/api/health",
         "predict": "POST /api/predict (multipart 'file', optional ?gradcam=true|false)",
     }
+
+
+# ─── Serve the pre-built React UI at "/" ──────────────────────────────────
+# After running `npm run build` in frontend/, the bundle lands in
+# frontend/dist/. FastAPI serves it directly so users only need Python.
+# /api/* routes above take precedence (they're declared first).
+from fastapi.responses import FileResponse  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+
+DIST_DIR = ROOT / "frontend" / "dist"
+if DIST_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=DIST_DIR / "assets"), name="assets")
+    if (DIST_DIR / "favicon.ico").exists():
+        @app.get("/favicon.ico", include_in_schema=False)
+        def _favicon():
+            return FileResponse(DIST_DIR / "favicon.ico")
+
+    @app.get("/", include_in_schema=False)
+    def _index():
+        return FileResponse(DIST_DIR / "index.html")
+
+    # SPA fallback — anything not matched by /api/*, /docs, /openapi.json,
+    # /assets/*, or /favicon.ico returns index.html so client-side routing works.
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def _spa_fallback(full_path: str):
+        # Don't shadow the /api docs and openapi
+        if full_path.startswith(("api", "docs", "redoc", "openapi.json")):
+            raise HTTPException(status_code=404, detail="Not found")
+        candidate = DIST_DIR / full_path
+        if candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(DIST_DIR / "index.html")
+else:
+    @app.get("/", include_in_schema=False)
+    def _no_dist():
+        return {
+            "warning": (
+                "frontend/dist not found. Build the React UI with "
+                "`cd frontend && npm run build`, or open http://localhost:5173 "
+                "if you're running `npm run dev` separately."
+            ),
+            "api_root": "/api",
+            "docs": "/docs",
+        }

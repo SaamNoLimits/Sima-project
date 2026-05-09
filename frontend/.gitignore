@@ -1,5 +1,6 @@
 node_modules
-dist
 .DS_Store
 *.local
 .env
+# dist/ is intentionally NOT ignored — shipped with the repo so Windows
+# users without Node.js can run the app (served by FastAPI).

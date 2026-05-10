@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroVista - Rapports &amp; Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#38684c",
+                        "primary": "#023820",
+                        "surface-dim": "#d9dad6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#9fd2b0",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container": "#edeeea",
+                        "on-primary-fixed": "#002111",
+                        "on-tertiary-container": "#e9a2a7",
+                        "primary-container": "#1f4f35",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#047240",
+                        "tertiary-fixed-dim": "#fcb3b8",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "outline": "#717972",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c1a",
+                        "outline-variant": "#c0c9c0",
+                        "tertiary-container": "#6b373c",
+                        "on-tertiary-fixed": "#360d13",
+                        "secondary": "#006d3d",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "primary-fixed": "#baefcb",
+                        "on-surface-variant": "#414942",
+                        "secondary-fixed": "#9af6b8",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f9faf5",
+                        "background": "#f9faf5",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-secondary-fixed": "#00210f",
+                        "on-primary-fixed-variant": "#205036",
+                        "tertiary": "#502127",
+                        "on-tertiary-fixed-variant": "#6b373c",
+                        "surface-container-low": "#f3f4f0",
+                        "surface": "#f9faf5",
+                        "primary-fixed-dim": "#9fd2b0",
+                        "secondary-container": "#97f3b5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e7e9e4",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-highest": "#e2e3df",
+                        "on-primary-container": "#8dc09e",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e3df",
+                        "on-surface": "#191c1a",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "container-padding": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "tabular-data": ["JetBrains Mono"],
+                        "body-base": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "tabular-data": ["14px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["42px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F4F4EE; }
+        .card-shadow { box-shadow: 0px 4px 10px rgba(24, 24, 27, 0.04); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-primary shadow-sm flex flex-col h-full py-gutter px-4 z-50">
+<div class="flex items-center gap-4 mb-8 pt-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center overflow-hidden">
+<img alt="Logo NeuroVista" class="w-full h-full object-cover" data-alt="A highly detailed, macro photograph of a stylized, abstract metallic brain structure glowing with a soft, clinical green light against a stark white background. The intricate folds of the brain are rendered with surgical precision, exuding a sense of advanced medical technology and modern academic rigor. The lighting is bright and high-key, creating a clean, sterile, yet premium aesthetic suitable for a high-end diagnostic software interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJPwU1uYK0MhPJD2hXw0WPtU5Y64QdJT-CpgSxC7SU2KT9CSmOG_ouE84L4V31PjF3x-WDMWi7Gsx9Ma8I8FoEK94EhYnWpmYg3PZMztqurF2w3f42kNOx7dme1EXZHYzX2Agve0HlPp4z2gQuwv8PbCG-Oykocu8F--fw3BlZWD9YDNJHi67MUqSx3P4rpTziOR7tWun49hi2Nw9G09wLAINC9om0HKNh-6x577OdSntGWxpCyICQZxBn-FVZ-NC5IiGsQkLZRg9m"/>
+</div>
+<div>
+<h1 class="font-display-lg text-headline-md tracking-wider text-on-primary">NEUROVISTA</h1>
+<p class="text-on-primary/70 text-label-caps uppercase">Système Clinique</p>
+</div>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed transition-colors rounded-lg py-3 px-4 font-bold mb-8 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+            Lancer Diagnostic
+        </button>
+<div class="flex-1 flex flex-col gap-2">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Tableau de bord
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">biotech</span>
+                Nouvelle analyse
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+                Historique
+            </a>
+<a class="text-on-primary-fixed bg-secondary-container rounded-lg font-bold p-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assessment</span>
+                Rapports
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">category</span>
+                Classes
+            </a>
+</div>
+<div class="mt-auto border-t border-primary-container pt-4 flex flex-col gap-2">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Paramètres
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+                Aide
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky bg-surface border-b border-outline-variant/20 flex justify-between items-center h-16 px-margin-desktop z-40">
+<div class="flex items-center gap-4 text-on-surface-variant w-1/3">
+<span class="material-symbols-outlined">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-base w-full placeholder:text-outline" placeholder="Rechercher patient, analyse..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/30">
+<img alt="Dr. Neurologiste" class="w-full h-full object-cover" data-alt="A professional headshot of a confident female neurologist wearing a white lab coat, standing in a brightly lit, modern clinical environment. The lighting is crisp and even, emphasizing a sterile, academic atmosphere. The color palette is composed of stark whites, cool grays, and soft skin tones, aligning with a premium medical software interface aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWCet030h3Z69KLm3Z2C7TFdsCgiMOpLqn0ovfK0aj1UreMGxk9Az6y0VFNw5WMpaJ92aQTB88tEdJUo-D93n64jbGxK_PsZ-QMV0LXfwZOqulZPwgOROye-RAscc5TODPt8JLRswnMYnTdCJXJAcaxKf7RnnDxgAcEmUXLQfWhKRouZEi3FfBRzNPp0CWgSSkS0_fXMZ-aHXLrr2zgV7MYiTaC_0xbSaaizFPlYMOEVqmQJ8GcLobDUI8qfZd4jQSDmje21h3aBCB"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-desktop flex-1 flex flex-col gap-gutter max-w-7xl mx-auto w-full">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-background mb-1">Rapports &amp; analytics</h2>
+<p class="text-body-base text-on-surface-variant">Aperçu agrégé</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded bg-surface-container-lowest hover:bg-surface-container-low transition-colors font-body-base text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                        Export PDF
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded bg-surface-container-lowest hover:bg-surface-container-low transition-colors font-body-base text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+<!-- Top Row: KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Total Analyses (Mensuel)</p>
+<div class="flex items-end justify-between">
+<span class="font-tabular-data text-3xl font-bold text-on-background">1,248</span>
+<span class="flex items-center text-secondary font-tabular-data text-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            +12%
+                        </span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Volume Hebdomadaire</p>
+<div class="flex items-end justify-between">
+<span class="font-tabular-data text-3xl font-bold text-on-background">312</span>
+<span class="flex items-center text-on-surface-variant font-tabular-data text-sm">
+<span class="material-symbols-outlined text-[16px]">horizontal_rule</span>
+                            0%
+                        </span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Catégorie Fréquente</p>
+<div class="flex items-end justify-between">
+<span class="font-body-base text-xl font-bold text-on-background">Meningioma</span>
+<span class="font-tabular-data text-sm text-on-surface-variant">42%</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Confiance Moyenne</p>
+<div class="flex items-end justify-between">
+<span class="font-tabular-data text-3xl font-bold text-on-background">98.4%</span>
+<span class="flex items-center text-secondary font-tabular-data text-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            +0.2%
+                        </span>
+</div>
+</div>
+</div>
+<!-- Middle Row: Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Line Chart: Volume par jour -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10 flex flex-col h-[350px]">
+<h3 class="font-headline-md text-lg text-on-background mb-6">Volume par jour</h3>
+<div class="flex-1 relative w-full border-l border-b border-outline-variant/30 pb-6 pl-4">
+<!-- Y-Axis Labels -->
+<div class="absolute left-[-20px] top-0 bottom-6 flex flex-col justify-between text-xs font-tabular-data text-on-surface-variant text-right">
+<span>60</span>
+<span>40</span>
+<span>20</span>
+<span>0</span>
+</div>
+<!-- Chart Area Placeholder (CSS simulated) -->
+<div class="w-full h-full relative overflow-hidden flex items-end">
+<!-- SVG Path approximation for Mint Area Fill -->
+<svg class="absolute bottom-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<defs>
+<lineargradient id="mintGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#9af6b8" stop-opacity="0.6"></stop>
+<stop offset="100%" stop-color="#9af6b8" stop-opacity="0.05"></stop>
+</lineargradient>
+</defs>
+<path d="M0,100 L0,70 Q10,60 20,40 T40,50 T60,20 T80,30 T100,10 L100,100 Z" fill="url(#mintGrad)"></path>
+<path d="M0,70 Q10,60 20,40 T40,50 T60,20 T80,30 T100,10" fill="none" stroke="#006d3d" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-4 right-0 flex justify-between text-xs font-tabular-data text-on-surface-variant pt-2 border-t border-outline-variant/30">
+<span>Lun</span>
+<span>Mar</span>
+<span>Mer</span>
+<span>Jeu</span>
+<span>Ven</span>
+<span>Sam</span>
+<span>Dim</span>
+</div>
+</div>
+</div>
+<!-- Horizontal Stacked Bar: Répartition -->
+<div class="bg-surface-container-lowest rounded-lg p-container-padding card-shadow border border-outline-variant/10 flex flex-col h-[350px]">
+<h3 class="font-headline-md text-lg text-on-background mb-6">Répartition par catégorie</h3>
+<div class="flex-1 flex flex-col justify-center gap-6">
+<!-- Bar 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-body-base font-medium">Meningioma</span>
+<span class="font-tabular-data">42% (524)</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-body-base font-medium">Glioma</span>
+<span class="font-tabular-data">35% (436)</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 35%"></div>
+</div>
+</div>
+<!-- Bar 3 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-body-base font-medium">Pituitary</span>
+<span class="font-tabular-data">18% (224)</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full rounded-full" style="width: 18%"></div>
+</div>
+</div>
+<!-- Bar 4 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-body-base font-medium">Normal</span>
+<span class="font-tabular-data">5% (64)</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-outline-variant h-full rounded-full" style="width: 5%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Sparklines -->
+<h3 class="font-headline-md text-lg text-on-background mt-4">Tendance par catégorie</h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter pb-8">
+<!-- Sparkline 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-4 card-shadow border border-outline-variant/10 flex flex-col justify-between h-24">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps uppercase">Meningioma</span>
+<span class="font-tabular-data text-xs text-secondary flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_drop_up</span>4%</span>
+</div>
+<div class="w-full h-8 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,15 L20,10 L40,12 L60,5 L80,8 L100,2" fill="none" stroke="#006d3d" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Sparkline 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-4 card-shadow border border-outline-variant/10 flex flex-col justify-between h-24">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps uppercase">Glioma</span>
+<span class="font-tabular-data text-xs text-error flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_drop_down</span>2%</span>
+</div>
+<div class="w-full h-8 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,5 L20,8 L40,6 L60,15 L80,12 L100,18" fill="none" stroke="#717972" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Sparkline 3 -->
+<div class="bg-surface-container-lowest rounded-lg p-4 card-shadow border border-outline-variant/10 flex flex-col justify-between h-24">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps uppercase">Pituitary</span>
+<span class="font-tabular-data text-xs text-secondary flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_drop_up</span>1%</span>
+</div>
+<div class="w-full h-8 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,10 L20,12 L40,10 L60,8 L80,9 L100,7" fill="none" stroke="#006d3d" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Sparkline 4 -->
+<div class="bg-surface-container-lowest rounded-lg p-4 card-shadow border border-outline-variant/10 flex flex-col justify-between h-24">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps uppercase">Normal</span>
+<span class="font-tabular-data text-xs text-on-surface-variant flex items-center"><span class="material-symbols-outlined text-[14px]">horizontal_rule</span>0%</span>
+</div>
+<div class="w-full h-8 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,10 L20,11 L40,9 L60,10 L80,10 L100,10" fill="none" stroke="#c0c9c0" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

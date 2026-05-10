@@ -3,8 +3,6 @@ import LoginForm from './components/LoginForm'
 import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import StatCard from './components/StatCard'
-import ClassDistChart from './components/ClassDistChart'
-import ConfidenceDonut from './components/ConfidenceDonut'
 import UploadZone from './components/UploadZone'
 import ResultCard from './components/ResultCard'
 import { CLASS_ORDER, CLASS_META } from './classInfo'
@@ -20,11 +18,7 @@ function firstName(full) {
   return cleaned.split(/\s+/)[0] || cleaned || full
 }
 
-function todayLong() {
-  return new Date().toLocaleDateString('fr-FR', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-  })
-}
+const CLASS_CHIP_KEY = (cls) => cls
 
 export default function App() {
   const [user, setUser]       = useState(null)
@@ -64,6 +58,18 @@ export default function App() {
   }, [file])
 
   const stats = useMemo(() => summarize(history), [history])
+
+  // Class distribution counts
+  const classCounts = useMemo(() => {
+    const counts = Object.fromEntries(CLASS_ORDER.map((c) => [c, 0]))
+    history.forEach((h) => { if (counts[h.pred] !== undefined) counts[h.pred]++ })
+    return counts
+  }, [history])
+  const maxCount = Math.max(1, ...Object.values(classCounts))
+  const topClass = CLASS_ORDER.reduce(
+    (a, c) => (classCounts[c] > classCounts[a] ? c : a),
+    CLASS_ORDER[0],
+  )
 
   const handleLogin = (u) => {
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(u))
@@ -139,131 +145,162 @@ export default function App() {
 
   if (!user) return <LoginForm onLogin={handleLogin} />
 
+  // Filter recent items by search
   const filteredHistory = search.trim()
     ? history.filter((h) =>
         h.label_fr.toLowerCase().includes(search.toLowerCase()) ||
         h.filename?.toLowerCase().includes(search.toLowerCase()))
     : history
 
-  let statusPill = null
-  if (healthErr) {
-    statusPill = <span className="status-pill err"><span className="dot" /> API hors ligne</span>
-  } else if (health) {
-    statusPill = health.model_loaded
-      ? <span className="status-pill ok">
-          <span className="dot" />
-          Modèle chargé · {health.model_kind}{latencyMs != null ? ` · ${latencyMs} ms` : ''}
-        </span>
-      : <span className="status-pill warn"><span className="dot" /> Mode démo</span>
-  }
-
-  const Icon = {
-    target:  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-    folder:  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>,
-    chart:   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M7 13l4-4 4 4 5-5"/></svg>,
-    sun:     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>,
-  }
-
-  // Helpers — turn empty data into meaningful displays
-  const totalLabel    = stats.total === 0 ? 'En attente' : String(stats.total)
-  const avgConfLabel  = stats.total === 0 ? '—'          : `${(stats.avgConf * 100).toFixed(1)}%`
-  const todayLabel    = stats.todayCount === 0 ? '—'    : String(stats.todayCount)
+  // Display values for stat cards
+  const totalLabel    = stats.total === 0 ? '—' : String(stats.total)
+  const tumorCount    = history.filter((h) => h.pred !== 'notumor').length
+  const tumorPct      = stats.total ? ((tumorCount / stats.total) * 100).toFixed(1) : '0'
+  const avgConfLabel  = stats.total === 0 ? '—' : `${(stats.avgConf * 100).toFixed(1)}%`
+  const todayLabel    = String(stats.todayCount)
 
   return (
     <div className="app">
       <div className="shell">
-        <Sidebar active={activeNav} onNavigate={setActiveNav} onLogout={handleLogout} />
+        <Sidebar
+          active={activeNav}
+          onNavigate={setActiveNav}
+          onCta={() => { handleReset(); setActiveNav('upload') }}
+        />
 
         <div>
-          <TopBar user={user} query={search} onQuery={setSearch} latencyMs={latencyMs} />
+          <TopBar
+            user={user}
+            query={search}
+            onQuery={setSearch}
+            latencyMs={latencyMs}
+            onLogout={handleLogout}
+          />
 
           <main className="main">
 
-            {/* ── EN-TÊTE DE PAGE ──────────────────────────────────── */}
+            {/* ── PAGE HEADER (display-lg) ─────────────────────────── */}
             <div className="page-header">
               <div>
-                <h1>Bonjour, {firstName(user.name)}</h1>
-                <p>{todayLong()} · Vue d'ensemble du classifieur IRM cérébral.</p>
+                <h2>Bonjour, {firstName(user.name)}</h2>
+                <p>Voici un résumé de l'activité diagnostique.</p>
               </div>
               <div className="page-actions">
-                {statusPill}
                 <button className="btn" onClick={() => { handleReset(); setActiveNav('upload') }}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span className="material-symbols-outlined">add</span>
                   Nouvelle analyse
-                </button>
-                <button className="btn outline" onClick={handleDownloadReport} disabled={!result}>
-                  Exporter
                 </button>
               </div>
             </div>
 
-            {/* ── CARTES STATS ─────────────────────────────────────── */}
+            {/* ── STATS GRID ──────────────────────────────────────── */}
             <section className="stat-grid">
               <StatCard
                 featured
-                icon={Icon.target}
-                num="96,79%"
-                label="Précision du modèle"
-                trend="ResNet34 · validation set (n=840)"
-              />
-              <StatCard
-                icon={Icon.folder}
-                num={totalLabel}
+                bgIcon="biotech"
+                icon="biotech"
                 label="Analyses totales"
-                trend={stats.total === 0 ? 'Aucune analyse réalisée' : `+${stats.todayCount} aujourd'hui`}
+                num={totalLabel}
+                trend={stats.total === 0 ? 'En attente' : `${stats.todayCount} aujourd'hui`}
+                trendIcon={stats.total === 0 ? 'hourglass_empty' : 'trending_up'}
               />
               <StatCard
-                icon={Icon.chart}
-                num={avgConfLabel}
+                icon="coronavirus"
+                label="Tumorales détectées"
+                num={tumorCount === 0 ? '—' : String(tumorCount)}
+                trend={stats.total === 0 ? '—' : `${tumorPct}% du total`}
+                trendIcon=""
+              />
+              <StatCard
+                icon="timer"
+                label="Latence API"
+                num={latencyMs != null ? `${latencyMs} ms` : '—'}
+                trend={health?.model_kind ? `${health.model_kind} · CPU` : '—'}
+                trendIcon="bolt"
+              />
+              <StatCard
+                icon="verified"
                 label="Confiance moyenne"
+                num={avgConfLabel}
                 trend={stats.total === 0 ? 'En attente d\'analyses' : `Sur ${stats.total} prédiction${stats.total > 1 ? 's' : ''}`}
-              />
-              <StatCard
-                icon={Icon.sun}
-                num={todayLabel}
-                label="Analyses du jour"
-                trend={stats.lastEntry ? `Dernière · ${formatRelative(stats.lastEntry.ts)}` : 'Aucune analyse aujourd\'hui'}
+                trendIcon="trending_up"
               />
             </section>
 
-            {/* ── ROW 1 : analytics + info modèle ──────────────────── */}
-            <section className="dash-row two-thirds-third">
-              <ClassDistChart history={history} />
-
+            {/* ── ROW : bar chart + activity feed ─────────────────── */}
+            <section className="dash-row eight-four">
+              {/* Bar chart */}
               <div className="card">
                 <div className="card-header">
-                  <div>
-                    <h3>Modèle d'inférence</h3>
-                    <div className="sub">Fiche technique du classifieur en production.</div>
-                  </div>
+                  <h3>Distribution des catégories</h3>
+                  <button className="card-action">Voir tout</button>
                 </div>
+                <div className="barchart">
+                  {CLASS_ORDER.map((cls) => {
+                    const v = classCounts[cls]
+                    const heightPct = (v / maxCount) * 100
+                    const isTop = stats.total > 0 && cls === topClass && v > 0
+                    return (
+                      <div className="bar-col" key={cls}>
+                        <span className="val">{v || ''}</span>
+                        <div
+                          className={`bar${isTop ? ' active' : ''}`}
+                          style={{ height: `${Math.max(heightPct, 4)}%` }}
+                        />
+                        <span className="lbl">{CLASS_META[cls].fr}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
 
-                <ul className="model-spec">
-                  <li><span>Architecture</span><strong>ResNet34</strong></li>
-                  <li><span>Pré-entraînement</span><strong>ImageNet</strong></li>
-                  <li><span>Framework</span><strong>fastai 2.8.7 · torch 2.10</strong></li>
-                  <li><span>Entrée</span><strong>RGB 224 × 224</strong></li>
-                  <li><span>Sortie</span><strong>4 classes (softmax)</strong></li>
-                  <li><span>Macro F1</span><strong>0,9673</strong></li>
-                  <li><span>Macro AUC</span><strong>0,9988</strong></li>
-                  <li><span>Taille</span><strong>83,5 MB</strong></li>
-                </ul>
+              {/* Activity feed */}
+              <div className="card">
+                <div className="card-header">
+                  <h3>Activité récente</h3>
+                  {history.length > 0 && (
+                    <button className="link-btn" onClick={handleClearHistory}>Effacer</button>
+                  )}
+                </div>
+                {history.length === 0 ? (
+                  <p className="muted" style={{ fontSize: 14 }}>
+                    Vos analyses apparaîtront ici.
+                  </p>
+                ) : (
+                  <div className="activity-feed">
+                    {history.slice(0, 4).map((h, i) => (
+                      <div className="activity-item" key={`${h.ts}-${i}`}>
+                        <div className={`activity-icon ${h.pred === 'notumor' ? 'ok' : h.pred === 'glioma' ? 'warn' : 'info'}`}>
+                          <span className="material-symbols-outlined">
+                            {h.pred === 'notumor' ? 'done_all' : h.pred === 'glioma' ? 'warning' : 'biotech'}
+                          </span>
+                        </div>
+                        <div className="activity-body">
+                          <p>
+                            <strong>{h.filename || '—'}</strong> · {h.label_fr.toLowerCase()}.
+                          </p>
+                          <p className="ts">{formatRelative(h.ts)} · confiance {(h.confidence * 100).toFixed(0)}%</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 
-            {/* ── UPLOAD / RÉSULTAT ────────────────────────────────── */}
-            <section className="dash-row" style={{ gridTemplateColumns: '1fr', marginBottom: '1.5rem' }}>
-              <div className="card">
-                <div className="card-header">
-                  <div>
-                    <h3>{result ? 'Résultat de l\'analyse' : 'Soumettre une IRM'}</h3>
-                    <div className="sub">Image ≥ 224 × 224 px · JPG ou PNG · inférence locale, ~1 s.</div>
+            {/* ── UPLOAD / RESULT ─────────────────────────────────── */}
+            {!file && !result && (
+              <section style={{ marginBottom: '2rem' }}>
+                <UploadZone onFile={handleFile} />
+              </section>
+            )}
+
+            {file && !result && (
+              <section style={{ marginBottom: '2rem' }}>
+                <div className="card">
+                  <div className="card-header">
+                    <h3>Aperçu de l'IRM</h3>
                   </div>
-                </div>
-
-                {!file && !result && <UploadZone onFile={handleFile} />}
-
-                {file && !result && (
                   <div className="preview">
                     <div>
                       <img src={previewUrl} alt="Aperçu IRM" />
@@ -279,7 +316,10 @@ export default function App() {
                         <button className="btn" onClick={handleAnalyze} disabled={loading}>
                           {loading
                             ? <><span className="spinner" />Analyse en cours…</>
-                            : <>Lancer l'analyse <span className="arrow">→</span></>}
+                            : <>
+                                <span className="material-symbols-outlined">play_arrow</span>
+                                Lancer l'analyse
+                              </>}
                         </button>
                         <button className="btn outline" onClick={handleReset} disabled={loading}>
                           Changer d'image
@@ -287,100 +327,75 @@ export default function App() {
                       </div>
                     </div>
                   </div>
-                )}
-
-                {error && <div className="error-box" style={{ marginTop: '1rem' }}><strong>Erreur :</strong> {error}</div>}
-
-                {result && (
-                  <div className="stack">
-                    <ResultCard result={result} threshold={CONFIDENCE_THRESHOLD} />
-                    <div className="btn-row">
-                      <button className="btn" onClick={handleDownloadReport}>
-                        Télécharger le rapport <span className="arrow">→</span>
-                      </button>
-                      <button className="btn outline" onClick={handleReset}>
-                        Nouvelle IRM
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
-
-            {/* ── ROW 3 : analyses récentes + classes + donut ──────── */}
-            <section className="dash-row thirds">
-              <div className="card">
-                <div className="card-header">
-                  <div>
-                    <h3>Analyses récentes</h3>
-                    <div className="sub">{history.length} entrée{history.length === 1 ? '' : 's'} (max 20).</div>
-                  </div>
-                  {history.length > 0 && (
-                    <button className="link-btn" onClick={handleClearHistory}>Effacer</button>
-                  )}
                 </div>
+              </section>
+            )}
 
+            {error && <div className="error-box"><strong>Erreur :</strong> {error}</div>}
+
+            {result && (
+              <section style={{ marginBottom: '2rem' }}>
+                <div className="stack">
+                  <ResultCard result={result} threshold={CONFIDENCE_THRESHOLD} />
+                  <div className="btn-row">
+                    <button className="btn" onClick={handleDownloadReport}>
+                      <span className="material-symbols-outlined">download</span>
+                      Télécharger le rapport
+                    </button>
+                    <button className="btn outline" onClick={handleReset}>
+                      <span className="material-symbols-outlined">refresh</span>
+                      Nouvelle IRM
+                    </button>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* ── RECENT ANALYSES TABLE (Stitch-style) ────────────── */}
+            <section style={{ marginBottom: '2rem' }}>
+              <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                <div className="card-header" style={{ padding: '1.25rem 1.5rem', background: 'var(--surface-soft)', borderBottom: '1px solid rgba(193,201,192,0.15)', margin: 0 }}>
+                  <h3>Analyses récentes</h3>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--on-surface-variant)' }}>more_horiz</span>
+                </div>
                 {filteredHistory.length === 0 ? (
-                  <div style={{ padding: '2rem 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    {search ? 'Aucun résultat pour cette recherche.' : 'Vos prédictions s\'afficheront ici.'}
+                  <div style={{ padding: '2rem 1.5rem', textAlign: 'center', color: 'var(--on-surface-variant)' }}>
+                    {search ? 'Aucun résultat pour cette recherche.' : 'Aucune analyse pour le moment.'}
                   </div>
                 ) : (
-                  <ul className="recent-list">
-                    {filteredHistory.slice(0, 6).map((h, i) => (
-                      <li key={`${h.ts}-${i}`} className="recent-item">
-                        <span className="recent-check">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        </span>
-                        <div className="recent-body">
-                          <div className="recent-top">
-                            <span className="recent-title">{h.label_fr}</span>
-                            <span className="recent-conf">{(h.confidence * 100).toFixed(0)}%</span>
-                          </div>
-                          <div className="recent-meta">{h.filename || '—'} · {formatRelative(h.ts)}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  <table className="analyses-table">
+                    <thead>
+                      <tr>
+                        <th>FICHIER</th>
+                        <th>DATE</th>
+                        <th>CATÉGORIE</th>
+                        <th style={{ textAlign: 'right' }}>CONFIANCE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredHistory.slice(0, 8).map((h, i) => (
+                        <tr key={`${h.ts}-${i}`}>
+                          <td className="filename">{h.filename || '—'}</td>
+                          <td>{formatRelative(h.ts)}</td>
+                          <td>
+                            <span className={`class-chip ${CLASS_CHIP_KEY(h.pred)}`}>
+                              <span className="dot" style={{ background: h.color }} />
+                              {h.label_fr}
+                            </span>
+                          </td>
+                          <td className="conf" style={{ textAlign: 'right' }}>
+                            {(h.confidence * 100).toFixed(1)}%
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 )}
               </div>
-
-              <div className="card">
-                <div className="card-header">
-                  <div>
-                    <h3>Classes détectées</h3>
-                    <div className="sub">Sortie ResNet34 · softmax 4 classes.</div>
-                  </div>
-                </div>
-                <ul className="team-list">
-                  {CLASS_ORDER.map((c) => {
-                    const meta = CLASS_META[c]
-                    const sevBadge =
-                      c === 'glioma' ? 'badge-high' :
-                      c === 'notumor' ? 'badge-normal' : 'badge-moderate'
-                    const sevLbl =
-                      c === 'glioma' ? 'Sévérité élevée' :
-                      c === 'notumor' ? 'Normale' : 'Modérée'
-                    return (
-                      <li key={c} className="team-item">
-                        <span className="team-avatar" style={{ background: meta.color }}>
-                          {meta.fr.charAt(0)}
-                        </span>
-                        <div className="team-body">
-                          <div className="team-name">{meta.fr}</div>
-                          <div className="team-tech"><code>{c}</code></div>
-                        </div>
-                        <span className={`team-badge ${sevBadge}`}>{sevLbl}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-
-              <ConfidenceDonut history={history} />
             </section>
 
-            <div className="footer">
-              NeuroVista v1.0 · Mémoire de fin d'études · 2026 · Outil de recherche, ne remplace pas un avis médical.
+            <div style={{ textAlign: 'center', padding: '2rem', fontSize: 12, color: 'var(--outline-variant)', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 700 }}>
+              NeuroVista v1.0 · Mémoire de fin d'études · 2026
             </div>
 
           </main>

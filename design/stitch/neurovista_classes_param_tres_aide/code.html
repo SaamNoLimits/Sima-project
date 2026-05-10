@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroVista - Classes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#38684c",
+                        "primary": "#023820",
+                        "surface-dim": "#d9dad6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#9fd2b0",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container": "#edeeea",
+                        "on-primary-fixed": "#002111",
+                        "on-tertiary-container": "#e9a2a7",
+                        "primary-container": "#1f4f35",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#047240",
+                        "tertiary-fixed-dim": "#fcb3b8",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "outline": "#717972",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c1a",
+                        "outline-variant": "#c0c9c0",
+                        "tertiary-container": "#6b373c",
+                        "on-tertiary-fixed": "#360d13",
+                        "secondary": "#006d3d",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "primary-fixed": "#baefcb",
+                        "on-surface-variant": "#414942",
+                        "secondary-fixed": "#9af6b8",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f9faf5",
+                        "background": "#f9faf5",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-secondary-fixed": "#00210f",
+                        "on-primary-fixed-variant": "#205036",
+                        "tertiary": "#502127",
+                        "on-tertiary-fixed-variant": "#6b373c",
+                        "surface-container-low": "#f3f4f0",
+                        "surface": "#f9faf5",
+                        "primary-fixed-dim": "#9fd2b0",
+                        "secondary-container": "#97f3b5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e7e9e4",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-highest": "#e2e3df",
+                        "on-primary-container": "#8dc09e",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e3df",
+                        "on-surface": "#191c1a",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "container-padding": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "tabular-data": [
+                            "JetBrains Mono"
+                        ],
+                        "body-base": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-md": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "display-lg": [
+                            "Plus Jakarta Sans"
+                        ]
+                    },
+                    "fontSize": {
+                        "label-caps": [
+                            "12px",
+                            {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "tabular-data": [
+                            "14px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "body-base": [
+                            "16px",
+                            {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-md": [
+                            "24px",
+                            {
+                                "lineHeight": "1.4",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "display-lg": [
+                            "42px",
+                            {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .clinical-shadow {
+            box-shadow: 0 4px 10px rgba(24, 24, 27, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-[#F4F4EE] text-on-surface font-body-base antialiased min-h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-primary dark:bg-primary-container shadow-sm flex-col h-full py-gutter px-4 z-50">
+<div class="flex items-center gap-3 mb-8 px-2 pt-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold overflow-hidden">
+<img alt="Logo NeuroVista" class="w-full h-full object-cover" data-alt="A stylized minimalist medical logo featuring an abstract brain combined with a camera aperture, predominantly in deep forest green and pristine white, representing the NeuroVista clinical diagnostic system. Minimalist flat design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlPHrK71Q1YBVT4HMpJR5tY5QG2upcdIOAnzkfarJAdOy3ExwIRpEf1xHC_pfdHVmldtfxV4FNhSNzzF6VieBNaVxrzj3qTFJpwEZQJoqXIm46Nu2rHwyzR3Ky_dFNTGrPGLuMNPadTsD6uCrHP51eQlZQZpk0f9N46yAE7476tzSnGODHWouI_5ILuhGkeZCbkxNgJ-jScCCfTPOrU_LiXODuVPt0R6Nqkl3yGdgzK_nkJO_YnjZqw5l8LS4f66pNd4_l6a6M3aaz"/>
+</div>
+<div>
+<h1 class="font-display-lg text-headline-md tracking-wider text-on-primary dark:text-on-primary-container text-lg">NEUROVISTA</h1>
+<p class="text-on-primary/70 font-label-caps text-[10px] tracking-widest uppercase">Système Clinique</p>
+</div>
+</div>
+<button class="bg-secondary text-on-secondary hover:bg-secondary-fixed-dim transition-colors rounded-lg py-3 px-4 font-bold flex items-center justify-center gap-2 mb-8 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+            Lancer Diagnostic
+        </button>
+<div class="flex-1 flex flex-col gap-1">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-base text-body-base">Tableau de bord</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-body-base text-body-base">Nouvelle analyse</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-base text-body-base">Historique</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-body-base text-body-base">Rapports</span>
+</a>
+<a class="text-on-primary-fixed bg-secondary-container dark:bg-secondary rounded-lg font-bold p-3 flex items-center gap-3 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-body-base text-body-base">Classes</span>
+</a>
+</div>
+<div class="mt-auto border-t border-on-primary/10 pt-4 flex flex-col gap-1">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-base text-body-base">Paramètres</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-base text-body-base">Aide</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="hidden md:flex justify-between items-center h-16 px-margin-desktop w-[calc(100%-16rem)] ml-auto docked full-width top-0 sticky bg-surface dark:bg-surface-dim z-40 border-b-0 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<div class="flex-1 flex items-center">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-[#FAFAF6] border border-[#18181B]/15 rounded-lg focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-tabular-data font-tabular-data transition-colors placeholder:text-outline" placeholder="Rechercher patient, ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100 hover:bg-surface-container relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<button class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100">
+<div class="text-right hidden lg:block">
+<p class="font-headline-md text-sm text-primary">Dr. Neurologiste</p>
+<p class="font-label-caps text-[10px] text-outline">Service d'Imagerie</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/20 overflow-hidden">
+<img alt="Dr. Neurologiste" class="w-full h-full object-cover" data-alt="A professional headshot of a neurologist wearing a white lab coat over a blue shirt, standing in a brightly lit modern hospital corridor. The lighting is clinical and crisp." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC31A0s7LRZbGtamdjYbvYX8s-8Va_Xi34PPOJ0w6PUARn_a92f0ZohW6r1UVZmMekEFzXDfu6qxc9cLZnRLBP0t3uugRdPGt6Ss2jLikn-630Y1EQ6cSelI9JhfRoGR_oLhtREU1VfwN9O2mhB5iOSaX_QZUpu5-Zy0w8IAQ9Ms9_SXWf-mjfsxg0GPIxQqkHsThs1dXIZKCtjUDAOoXn_2G8QYV9XXHuk6-C8iGZoQeNmLbb7aJDj-gad0opUz0oK3X-yxv7fH1R"/>
+</div>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 p-gutter md:p-margin-desktop max-w-[1600px] mx-auto min-h-[calc(100vh-4rem)]">
+<header class="mb-8">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Catégories diagnostiques détectées</h2>
+<p class="text-on-surface-variant max-w-3xl">Le système NeuroVista classifie les examens IRM en quatre catégories principales. Chaque classe bénéficie d'une modélisation de probabilité distincte optimisée sur une vaste cohorte clinique.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Glioma Card -->
+<article class="bg-surface-container-lowest rounded-xl clinical-shadow p-6 flex flex-col h-full border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-error/5 rounded-bl-[100px] -z-0 transition-transform group-hover:scale-110"></div>
+<header class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-8 bg-error rounded-full"></div>
+<h3 class="font-headline-md text-xl text-on-surface">Gliome</h3>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error/10 text-error font-tabular-data text-xs font-bold border border-error/20">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                        Urgent
+                    </span>
+</header>
+<div class="mb-6 flex-1 relative z-10">
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                        Tumeur primitive du système nerveux central issue des cellules gliales. Présente souvent des bords irréguliers et un œdème péritumoral important sur les séquences T2/FLAIR. Nécessite une évaluation rapide pour déterminer le grade.
+                    </p>
+<div class="bg-[#FAFAF6] rounded-lg p-4 border border-[#18181B]/10">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-outline uppercase">Représentation Dataset</span>
+<span class="font-tabular-data text-primary font-bold">28.4%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-error h-1.5 rounded-full" style="width: 28.4%"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 relative z-10 border-t border-outline-variant/20 pt-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">T1 Gadolinium</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">FLAIR</span>
+</div>
+</article>
+<!-- Meningioma Card -->
+<article class="bg-surface-container-lowest rounded-xl clinical-shadow p-6 flex flex-col h-full border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-[100px] -z-0 transition-transform group-hover:scale-110"></div>
+<header class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-8 bg-[#D97706] rounded-full"></div>
+<h3 class="font-headline-md text-xl text-on-surface">Méningiome</h3>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#D97706]/10 text-[#B45309] font-tabular-data text-xs font-bold border border-[#D97706]/20">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                        Attention
+                    </span>
+</header>
+<div class="mb-6 flex-1 relative z-10">
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                        Tumeur généralement bénigne extra-axiale naissant des méninges. Caractérisée par un rehaussement intense et homogène après injection de contraste, avec un signe classique de la "queue durale". Croissance souvent lente.
+                    </p>
+<div class="bg-[#FAFAF6] rounded-lg p-4 border border-[#18181B]/10">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-outline uppercase">Représentation Dataset</span>
+<span class="font-tabular-data text-primary font-bold">24.1%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-[#D97706] h-1.5 rounded-full" style="width: 24.1%"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 relative z-10 border-t border-outline-variant/20 pt-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">T1 C+</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">T2</span>
+</div>
+</article>
+<!-- No Tumor Card -->
+<article class="bg-surface-container-lowest rounded-xl clinical-shadow p-6 flex flex-col h-full border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] -z-0 transition-transform group-hover:scale-110"></div>
+<header class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-8 bg-secondary rounded-full"></div>
+<h3 class="font-headline-md text-xl text-on-surface">Pas de tumeur</h3>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/10 text-secondary font-tabular-data text-xs font-bold border border-secondary/20">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        Normal
+                    </span>
+</header>
+<div class="mb-6 flex-1 relative z-10">
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                        Anatomie cérébrale sans anomalie tissulaire focale ou diffuse évocatrice d'un processus néoplasique. Les ventricules, les sillons corticaux et la différenciation substance blanche/grise sont conservés.
+                    </p>
+<div class="bg-[#FAFAF6] rounded-lg p-4 border border-[#18181B]/10">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-outline uppercase">Représentation Dataset</span>
+<span class="font-tabular-data text-primary font-bold">29.8%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-secondary h-1.5 rounded-full" style="width: 29.8%"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 relative z-10 border-t border-outline-variant/20 pt-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">Toutes séquences</span>
+</div>
+</article>
+<!-- Pituitary Card -->
+<article class="bg-surface-container-lowest rounded-xl clinical-shadow p-6 flex flex-col h-full border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/5 rounded-bl-[100px] -z-0 transition-transform group-hover:scale-110"></div>
+<header class="flex justify-between items-start mb-4 relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-4 h-8 bg-[#8B5CF6] rounded-full"></div>
+<h3 class="font-headline-md text-xl text-on-surface">Tumeur pituitaire</h3>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#8B5CF6]/10 text-[#6D28D9] font-tabular-data text-xs font-bold border border-[#8B5CF6]/20">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                        Attention
+                    </span>
+</header>
+<div class="mb-6 flex-1 relative z-10">
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                        Adénome développé au sein de la selle turcique. Peut causer une compression du chiasma optique (macroadénome) ou des troubles endocriniens. L'analyse sagittale et coronale centrée sur l'hypophyse est critique.
+                    </p>
+<div class="bg-[#FAFAF6] rounded-lg p-4 border border-[#18181B]/10">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-outline uppercase">Représentation Dataset</span>
+<span class="font-tabular-data text-primary font-bold">17.7%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-[#8B5CF6] h-1.5 rounded-full" style="width: 17.7%"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 relative z-10 border-t border-outline-variant/20 pt-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">Sagittal T1</span>
+<span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-tabular-data text-xs border border-outline-variant/30">Coronal</span>
+</div>
+</article>
+</div>
+</main>
+</body></html>

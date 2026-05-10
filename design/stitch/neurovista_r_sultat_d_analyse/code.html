@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroVista - Résultats d'Analyse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#38684c",
+                        "primary": "#023820",
+                        "surface-dim": "#d9dad6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#9fd2b0",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container": "#edeeea",
+                        "on-primary-fixed": "#002111",
+                        "on-tertiary-container": "#e9a2a7",
+                        "primary-container": "#1f4f35",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#047240",
+                        "tertiary-fixed-dim": "#fcb3b8",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "outline": "#717972",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c1a",
+                        "outline-variant": "#c0c9c0",
+                        "tertiary-container": "#6b373c",
+                        "on-tertiary-fixed": "#360d13",
+                        "secondary": "#006d3d",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "primary-fixed": "#baefcb",
+                        "on-surface-variant": "#414942",
+                        "secondary-fixed": "#9af6b8",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f9faf5",
+                        "background": "#f9faf5",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-secondary-fixed": "#00210f",
+                        "on-primary-fixed-variant": "#205036",
+                        "tertiary": "#502127",
+                        "on-tertiary-fixed-variant": "#6b373c",
+                        "surface-container-low": "#f3f4f0",
+                        "surface": "#f9faf5",
+                        "primary-fixed-dim": "#9fd2b0",
+                        "secondary-container": "#97f3b5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e7e9e4",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-highest": "#e2e3df",
+                        "on-primary-container": "#8dc09e",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e3df",
+                        "on-surface": "#191c1a",
+                        "on-error-container": "#93000a",
+                        "medical-urgent": "#ef4444",
+                        "medical-attention": "#f59e0b",
+                        "medical-normal": "#10b981",
+                        "medical-cream": "#F4F4EE",
+                        "medical-cream-soft": "#FAFAF6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "container-padding": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "tabular-data": ["JetBrains Mono"],
+                        "body-base": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "tabular-data": ["14px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["42px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    },
+                    boxShadow: {
+                        'medical-card': '0 4px 10px rgba(24, 24, 27, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F4F4EE; }
+    </style>
+</head>
+<body class="text-on-surface font-body-base antialiased min-h-screen flex">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container font-body-base text-body-base h-screen w-64 fixed left-0 top-0 shadow-sm hidden md:flex flex-col py-gutter px-4 z-50">
+<div class="mb-10 flex flex-col items-center justify-center pt-6 gap-4">
+<div class="w-16 h-16 bg-surface rounded-full flex items-center justify-center p-2 shadow-inner">
+<img alt="Logo NeuroVista" class="w-full h-full object-cover rounded-full" data-alt="A stylized logo of a brain with a camera aperture in the center, representing NeuroVista. The logo uses a deep forest green color scheme on a white background, evoking a professional, medical, and technological aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUXS11jkxfsTeoe6EnAdaNmruKhVUiEGawnNPlbYN72DJiV5Uh8Dl8wJRSWpgGSW9R27dDAae1txJ3zGwPQNIjHipczyro7NAqqWJaitaJnhr8UAQbiGjWmfbxk3kw-LTnHJF-QxES8ncWZSHNtfYX1wXsQqfgkzH-Ls7WTrM_S3o1rfv0ltOsRKT11BJgn1IxY646duaycq3N1i8RvFH42sv6-1ODjZ7vuVa72M8fB5IlcRKMn6Id8eJEjfO0SD55OUHEyPrAFYEy"/>
+</div>
+<div class="text-center">
+<div class="font-display-lg text-[24px] tracking-wider text-on-primary dark:text-on-primary-container leading-none mb-1">NEUROVISTA</div>
+<div class="text-sm text-on-primary/70 tracking-widest uppercase">Système Clinique</div>
+</div>
+</div>
+<button class="bg-secondary text-on-secondary rounded-lg py-3 px-4 w-full font-bold mb-8 hover:bg-secondary-fixed-dim transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+            Lancer Diagnostic
+        </button>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Tableau de bord
+            </a>
+<!-- Active State Navigation -->
+<a class="text-on-primary-fixed bg-secondary-container dark:bg-secondary rounded-lg font-bold p-3 flex items-center gap-3 transition-colors scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
+                Nouvelle analyse
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+                Historique
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">assessment</span>
+                Rapports
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">category</span>
+                Classes
+            </a>
+</div>
+<div class="mt-auto pt-4 border-t border-primary-container flex flex-col gap-2">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Paramètres
+            </a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed-variant p-3 flex items-center gap-3 transition-colors hover:bg-primary-container dark:hover:bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+                Aide
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-64 bg-[#F4F4EE]">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-inverse-primary font-headline-md text-headline-md docked full-width top-0 sticky border-b border-outline-variant/20 flat no shadows flex justify-between items-center h-16 px-margin-desktop w-full z-40">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant/30 rounded-lg text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary w-64 transition-colors font-body-base" placeholder="Rechercher patient ou ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100 p-2 rounded-full hover:bg-surface-container-low relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+<div class="text-right hidden sm:block">
+<div class="text-sm font-bold text-on-surface leading-tight">Dr. Neurologiste</div>
+<div class="text-xs text-on-surface-variant">ID: MED-8942</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined" style="font-size: 32px;">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<main class="flex-1 p-margin-desktop overflow-y-auto">
+<!-- Header Section -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Résultats d'Analyse : Scan #MRI-2023-11A</h1>
+<p class="text-on-surface-variant font-body-base text-sm">Patient: Jean Dupont (ID: P-4029) • Date: 24 Oct 2023, 14:30</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-primary text-primary rounded-lg font-bold text-sm hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">replay</span>
+                        Nouvelle analyse
+                    </button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg font-bold text-sm hover:bg-primary-container transition-colors flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Télécharger le rapport
+                    </button>
+</div>
+</div>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+<!-- Left Column: Classification Results -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Primary Result Card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-medical-card border-l-4 border-medical-urgent relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]">warning</span>
+</div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-medical-urgent" style="font-variation-settings: 'FILL' 1;">error</span>
+<span class="font-label-caps text-label-caps text-medical-urgent uppercase tracking-widest bg-medical-urgent/10 px-2 py-1 rounded-full">Sévérité Élevée</span>
+</div>
+<h2 class="font-headline-md text-[32px] font-bold text-on-surface mb-2">Gliome</h2>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                            La classification indique une forte probabilité de présence d'un gliome. Des anomalies structurelles significatives ont été détectées dans la région pariétale droite. Une évaluation clinique immédiate est recommandée pour confirmer le diagnostic.
+                        </p>
+<div class="mb-2 flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Niveau de Confiance</span>
+<span class="font-tabular-data text-[24px] font-bold text-primary">98,2%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2.5 mb-2">
+<div class="bg-primary h-2.5 rounded-full" style="width: 98.2%"></div>
+</div>
+<p class="text-xs text-on-surface-variant text-right font-tabular-data">Marge d'erreur: ± 1.5%</p>
+</div>
+<!-- Probabilities Breakdown Card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-medical-card">
+<h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-outline-variant/20 pb-3">Répartition des Probabilités</h3>
+<div class="flex flex-col gap-5">
+<!-- Class 1 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-tabular-data text-sm font-bold text-on-surface">Gliome</div>
+<div class="flex-1">
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-medical-urgent h-2 rounded-full" style="width: 98.2%"></div>
+</div>
+</div>
+<div class="w-16 text-right font-tabular-data text-sm text-on-surface-variant">98.2%</div>
+</div>
+<!-- Class 2 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-tabular-data text-sm text-on-surface-variant">Méningiome</div>
+<div class="flex-1">
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-outline h-2 rounded-full" style="width: 1.1%"></div>
+</div>
+</div>
+<div class="w-16 text-right font-tabular-data text-sm text-on-surface-variant">1.1%</div>
+</div>
+<!-- Class 3 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-tabular-data text-sm text-on-surface-variant">Pituitaire</div>
+<div class="flex-1">
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-outline h-2 rounded-full" style="width: 0.5%"></div>
+</div>
+</div>
+<div class="w-16 text-right font-tabular-data text-sm text-on-surface-variant">0.5%</div>
+</div>
+<!-- Class 4 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-tabular-data text-sm text-on-surface-variant">Normal</div>
+<div class="flex-1">
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-outline h-2 rounded-full" style="width: 0.2%"></div>
+</div>
+</div>
+<div class="w-16 text-right font-tabular-data text-sm text-on-surface-variant">0.2%</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Image Viewport -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-medical-card h-full flex flex-col">
+<h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-outline-variant/20 pb-3 flex justify-between items-center">
+<span>Carte d'Attention Modèle</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-2 py-1 rounded">VUE AXIALE</span>
+</h3>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Original MRI -->
+<div class="flex flex-col h-full">
+<div class="font-label-caps text-label-caps text-on-surface-variant text-center mb-2">SCAN ORIGINAL</div>
+<div class="bg-black rounded-lg overflow-hidden relative flex-1 flex items-center justify-center p-8 border border-outline-variant/20">
+<div class="absolute top-2 left-2 font-tabular-data text-xs text-medical-normal">T1_CE</div>
+<div class="absolute bottom-2 right-2 font-tabular-data text-xs text-medical-normal">Z: 45.2mm</div>
+<img alt="Original MRI Scan" class="w-full h-auto object-contain grayscale mix-blend-screen" data-alt="A highly detailed black and white axial MRI scan of a human brain. The image is stark and clinical, set against a pitch-black background within a medical viewport. Subtle textural details of the brain tissue are visible, illuminated by the stark, sterile contrast typical of diagnostic radiology imaging." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBERqJai9PVSPB0vckU8Z2D0aWYd2COdk7MrGwhKaTtR_O72F_WhMvSqDATYXfrVkhTEKSCQFMQ8y7UxFn9RCb0Kzzx6Fe980winrUp2i9ruz4hgRCojY5Kv7i0hDoI1Nr-sX69QHhagpTAit1ySELVQOtIq55f4_M2Hts6w2rHaEO0CwF1fm7RQcti84FxURdiUqdn0DWSUgulJZQiblFIfnGlwJG-9R6uPxpBKy5pzPK5FY-X2CrgGHBJHTByG6ea_Djq0fyA-0gr"/>
+</div>
+</div>
+<!-- Heatmap Overlay -->
+<div class="flex flex-col h-full">
+<div class="font-label-caps text-label-caps text-on-surface-variant text-center mb-2">SUPERPOSITION CHALEUR</div>
+<div class="bg-black rounded-lg overflow-hidden relative flex-1 flex items-center justify-center p-8 border border-outline-variant/20">
+<div class="absolute top-2 left-2 font-tabular-data text-xs text-medical-urgent">HEATMAP_ON</div>
+<div class="absolute top-0 bottom-0 left-[50%] w-[1px] bg-medical-normal/30 border-l border-dashed border-medical-normal/50 pointer-events-none"></div>
+<div class="absolute left-0 right-0 top-[50%] h-[1px] bg-medical-normal/30 border-t border-dashed border-medical-normal/50 pointer-events-none"></div>
+<!-- Simulated Heatmap over identical image -->
+<div class="relative w-full h-full flex items-center justify-center">
+<img alt="MRI Scan with Heatmap" class="w-full h-auto object-contain grayscale mix-blend-screen" data-alt="A highly detailed black and white axial MRI scan of a human brain, identical to the original scan. This version features a vivid, glowing thermal heatmap overlay concentrated on the right parietal region. The heatmap colors range from deep blues to intense, bright reds and yellows, indicating the highest area of algorithmic attention in a stark, clinical viewport setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwCr3U6PJqQIVunLYAeOchussp7SZqEVs392nEjE1YWBt4zxtoqWBcuzCTFh0SmQddDLEYj4cEm5sIL0R-B6dsBRQ5sKtUANhWQv5pTahvNJMid87ZdVO4LHv-blXFTIssxSHbbdDtwphUNbwSzPRSY2KhDYDjGTR-X9DxUg4z8UQdI2YHVEuy6dbPUQF_vhBnVCziRVwDZUNqzLIZ2g5s8IGIF-pl--jpLBNdfCx1l9pIPJcSoX5dwwPOSDv2vdTzoaCQAWB9bofE"/>
+<!-- Fake heatmap gradient layer -->
+<div class="absolute top-[30%] right-[20%] w-32 h-32 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-medical-urgent via-medical-attention/60 to-transparent mix-blend-screen blur-xl opacity-80 pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Disclaimer Banner -->
+<div class="bg-surface-container-highest border border-medical-attention/30 rounded-lg p-4 flex gap-4 items-start shadow-sm mt-auto">
+<span class="material-symbols-outlined text-medical-attention mt-0.5">medical_information</span>
+<div>
+<h4 class="font-bold text-sm text-on-surface mb-1">Avertissement médical</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed font-body-base">
+                        Ce système de classification par intelligence artificielle est conçu comme un outil d'aide à la décision pour les professionnels de la santé qualifiés. Les résultats fournis par NeuroVista ne constituent pas un diagnostic médical final. Toute conclusion doit être vérifiée par un radiologue ou un neurologue agréé avant d'orienter le parcours de soins du patient.
+                    </p>
+</div>
+</div>
+</main>
+</div>
+</body></html>

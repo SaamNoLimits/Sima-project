@@ -29,9 +29,14 @@ export default function UploadZone({ onFile }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click() }}
     >
-      <img src="/assets/icons/upload.svg" alt="" className="upload-icon-svg" />
-      <h3>Déposez une IRM cérébrale</h3>
-      <p>ou cliquez pour parcourir · JPG / PNG · ≥ 224×224 px</p>
+      <div className="icon-wrap">
+        <span className="material-symbols-outlined">cloud_upload</span>
+      </div>
+      <h3>Soumettre une IRM cérébrale</h3>
+      <p>
+        Glissez-déposez vos fichiers DICOM, NIfTI ou JPEG ici, ou{' '}
+        <span className="browse">parcourez vos fichiers</span>.
+      </p>
       <input
         ref={inputRef}
         type="file"

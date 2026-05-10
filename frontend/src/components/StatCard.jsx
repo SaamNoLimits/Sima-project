@@ -1,25 +1,22 @@
-// Donezo-style stat card. First card uses `featured=true` for the filled emerald look.
-export default function StatCard({ icon, num, label, trend, featured = false }) {
+// Donezo/Stitch-style stat card. `featured=true` for the filled deep-green
+// hero card with decorative bg-icon; otherwise white card with side-icon.
+export default function StatCard({ icon, bgIcon, num, label, trend, trendIcon = 'trending_up', featured = false }) {
   return (
     <div className={`stat-card${featured ? ' featured' : ''}`}>
+      {featured && bgIcon && (
+        <span className="material-symbols-outlined stat-bg-icon">{bgIcon}</span>
+      )}
       <div className="stat-top">
-        <span className="stat-icon">{icon}</span>
-        <span className="stat-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="7" y1="17" x2="17" y2="7"/>
-            <polyline points="7,7 17,7 17,17"/>
-          </svg>
-        </span>
+        <div className="stat-label">{label}</div>
+        <div className="stat-icon">
+          <span className="material-symbols-outlined">{icon}</span>
+        </div>
       </div>
       <div className="stat-num">{num}</div>
-      <div className="stat-lbl">{label}</div>
       {trend && (
         <div className="stat-trend">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-            <polyline points="17 6 23 6 23 12"/>
-          </svg>
-          {trend}
+          {trendIcon && <span className="material-symbols-outlined">{trendIcon}</span>}
+          <span>{trend}</span>
         </div>
       )}
     </div>

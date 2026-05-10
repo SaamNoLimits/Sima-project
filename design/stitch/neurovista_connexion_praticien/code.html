@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroVista - Connexion Praticien</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#6b373c",
+                        "outline-variant": "#c0c9c0",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6b373c",
+                        "tertiary-fixed": "#ffdadb",
+                        "inverse-surface": "#2e312e",
+                        "on-secondary-fixed": "#00210f",
+                        "primary-fixed-dim": "#9fd2b0",
+                        "on-background": "#191c1a",
+                        "surface-variant": "#e2e3df",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9faf5",
+                        "error": "#ba1a1a",
+                        "primary-container": "#1f4f35",
+                        "surface-dim": "#d9dad6",
+                        "on-secondary-container": "#047240",
+                        "primary-fixed": "#baefcb",
+                        "on-primary-fixed-variant": "#205036",
+                        "primary": "#023820",
+                        "surface-container-highest": "#e2e3df",
+                        "on-tertiary-container": "#e9a2a7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#002111",
+                        "on-surface-variant": "#414942",
+                        "surface-container-high": "#e7e9e4",
+                        "tertiary-fixed-dim": "#fcb3b8",
+                        "background": "#f9faf5",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#360d13",
+                        "secondary-fixed": "#9af6b8",
+                        "surface-container": "#edeeea",
+                        "on-surface": "#191c1a",
+                        "surface-tint": "#38684c",
+                        "surface-container-low": "#f3f4f0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f9faf5",
+                        "tertiary": "#502127",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "on-primary-container": "#8dc09e",
+                        "inverse-primary": "#9fd2b0",
+                        "on-error-container": "#93000a",
+                        "secondary": "#006d3d",
+                        "outline": "#717972"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-padding": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-base": ["Plus Jakarta Sans"],
+                        "tabular-data": ["JetBrains Mono"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-lg": ["42px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "tabular-data": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased">
+<main class="min-h-screen flex flex-col md:flex-row">
+<!-- LEFT COLUMN: AUTH FORM -->
+<section class="w-full md:w-1/2 bg-[#F4F4EE] flex flex-col justify-between p-margin-desktop min-h-screen">
+<!-- Top Branding -->
+<div class="flex items-center space-x-3">
+<img alt="NeuroVista Logo" class="h-12 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHbf7MBSgh3EM2fEB6LhXme_moLOmAfGDzSNcA1d4wQALBlJxfQ5b_Bgjm3J0vd3f3msXO-vrwrYHIkQ4vn7nFHfcSycEXBBym6xqYS_jKMH2-KnZoUQccjPU0vtECq_Lymx0hp2rBZup4sdq4LBukkEdWLd4Z1_xWjUqJqodN-7me2i4WU1ysg63Hq1a-EUrdN1H8xhNvkcSMobhyLHFMOeyODUaVPnFz4sNYMd00jqVUp1_IFLz0Z5MP2G_3RP8ZFsq4xcNOmkcv"/>
+</div>
+<!-- Content Area -->
+<div class="max-w-md w-full mx-auto flex flex-col justify-center flex-grow py-12">
+<header class="mb-10">
+<h1 class="text-headline-md font-headline-md text-primary mb-2">Connexion praticien</h1>
+<p class="text-body-base text-on-surface-variant">Accédez au classifieur d'IRM cérébrales</p>
+</header>
+<form class="space-y-6">
+<div class="space-y-1.5">
+<label class="text-label-caps font-label-caps text-on-surface-variant block">Nom complet</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="person">person</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline/15 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-body-base" placeholder="Dr NASSIMA" type="text"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-label-caps font-label-caps text-on-surface-variant block">Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="mail">mail</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline/15 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-body-base" placeholder="nassima@hopital.fr" type="email"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-label-caps font-label-caps text-on-surface-variant block">Profil</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="description">description</span>
+<select class="w-full pl-10 pr-10 py-3 bg-surface-container-lowest border border-outline/15 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary appearance-none transition-all outline-none text-body-base">
+<option disabled="" selected="" value="">Sélectionnez votre profil</option>
+<option>Radiologue</option>
+<option>Neurologue</option>
+<option>Chercheur</option>
+<option>Étudiant</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary py-4 rounded-lg font-headline-md flex items-center justify-center space-x-2 hover:bg-primary transition-colors duration-200" type="button">
+<span>Commencer l'analyse</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+</div>
+<!-- Footer -->
+<footer class="pt-8">
+<p class="text-[10px] text-outline-variant font-label-caps tracking-wider">
+                    © 2026 NEUROVISTA · OUTIL ÉDUCATIF ET DE RECHERCHE
+                </p>
+</footer>
+</section>
+<!-- RIGHT COLUMN: VISUAL CONTEXT -->
+<section class="hidden md:flex md:w-1/2 relative bg-primary-container overflow-hidden items-center justify-center">
+<!-- Background Image with Gradient Overlay -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="A highly detailed close-up of a high-resolution brain MRI scan displayed on a professional medical diagnostic monitor. The image is bathed in deep forest green and charcoal tones, with a clinical and sterile aesthetic. Soft green digital light rays and microscopic data particles float across the scene. The mood is academic, precise, and technologically sophisticated, following a minimalist and modern medical journal visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCte-hm2Cydg0gTT9_FTUBGiRkIQZbvkeWdsQK6pgLts1t970D6bFlaNgIcatRPiBeOr326KDxLaRzgXb0L0IYIwkmOybH6wFetQcb4h7f7r7NAlrYHOabuiAs23FIFfBig_3XrlzeCobmccjEeNn4z1XjRVOrNrWQp_AFwgbgKZrUzS6fl5aLxvuo7Zp22g698cTo3pPf9G5i120uWP7BmfMqFb9f8qU8t2C6s3mZMOjk3XcWfJ2Z3Yi771--uiHLGhxDxgSgQwWYO"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary via-primary/80 to-transparent"></div>
+</div>
+<!-- Stats Bento Grid -->
+<div class="relative z-10 w-full max-w-lg px-margin-desktop">
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Stat Card 1 -->
+<div class="glass-card p-6 rounded-xl">
+<p class="text-on-primary-container text-label-caps font-label-caps mb-2 opacity-80 uppercase">Précision</p>
+<p class="text-on-primary text-headline-md font-tabular-data">96,79%</p>
+<div class="mt-4 h-1 w-full bg-on-primary/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed w-[96.79%]"></div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="glass-card p-6 rounded-xl">
+<p class="text-on-primary-container text-label-caps font-label-caps mb-2 opacity-80 uppercase">Score AUC</p>
+<p class="text-on-primary text-headline-md font-tabular-data">0,999</p>
+<div class="mt-4 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-fixed text-sm" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] text-on-primary-container font-label-caps uppercase">Standard Or</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="glass-card p-6 rounded-xl">
+<p class="text-on-primary-container text-label-caps font-label-caps mb-2 opacity-80 uppercase">Classes</p>
+<p class="text-on-primary text-headline-md font-tabular-data">4 Classes</p>
+<p class="text-[10px] mt-2 text-on-primary-container font-body-base leading-tight">Détectées par analyse de segmentation</p>
+</div>
+<!-- Stat Card 4 -->
+<div class="glass-card p-6 rounded-xl">
+<p class="text-on-primary-container text-label-caps font-label-caps mb-2 opacity-80 uppercase">Entraînement</p>
+<p class="text-on-primary text-headline-md font-tabular-data">7 023</p>
+<p class="text-[10px] mt-2 text-on-primary-container font-body-base leading-tight">IRMs traitées en phase de validation</p>
+</div>
+</div>
+<!-- Subtle Decorative Element -->
+<div class="mt-12 border-l-2 border-secondary-fixed/30 pl-6">
+<p class="text-on-primary text-body-base font-light italic leading-relaxed opacity-70">
+                        "L'intelligence artificielle au service de la précision diagnostique neurologique."
+                    </p>
+</div>
+</div>
+<!-- Absolute Texture Overlays -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+<div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-fixed/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2"></div>
+</section>
+</main>
+</body></html>

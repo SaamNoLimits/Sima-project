@@ -74,8 +74,13 @@ start.bat
 Double-cliquez `start.bat`. Le script :
 1. Crée un environnement virtuel `.venv\` si absent
 2. Installe PyTorch CPU + fastai + FastAPI (5–15 min la **première** fois ; instantané ensuite)
-3. Lance le serveur unique sur **http://localhost:8000** (l'UI React pré-construite est servie par FastAPI directement — un seul port, pas de Node.js requis)
+3. Lance le serveur unique sur **http://localhost:8000** *(l'UI React pré-construite est servie par FastAPI directement — un seul port, pas de Node.js requis)*
 4. Ouvre le navigateur
+
+> ⚠️ **L'application est sur le port `8000`, PAS `5173`.**
+> Le port 5173 est l'ancien port du serveur Vite de développement, qui n'est plus
+> lancé par `start.bat`. Si vous tombez sur `ERR_CONNECTION_REFUSED`, vérifiez
+> simplement que votre URL est `http://localhost:8000` et non `:5173`.
 
 Pour arrêter : Ctrl+C dans la fenêtre, ou la fermer.
 

@@ -76,19 +76,22 @@ if not exist "frontend\dist\index.html" (
 
 echo.
 echo ============================================================
-echo   Launching NeuroVista
+echo   Launching NeuroVista on  http://localhost:8000
 echo ============================================================
 echo.
-echo   Browser will open at http://localhost:8000/?reset=1
-echo   ^(?reset=1 wipes the previous session - user, history, cache^)
+echo   The UI (React) AND the API both run on PORT 8000.
+echo   There is no separate :5173 anymore.
+echo.
+echo   ^?reset=1 wipes the previous session ^(user, history, cache^).
 echo.
 echo   To STOP : press Ctrl+C in this window, or close it.
 echo.
 
 REM ── 7. Open browser AFTER backend has bound the port (4 s delay) ────────
-REM    Use a unique cache-buster (%RANDOM%) so the browser bypasses any URL
-REM    cache from a previous launch.
-start /b "" cmd /c "timeout /t 4 /nobreak >nul && start http://localhost:8000/?reset=1&t=%RANDOM%"
+REM    Single query param ?reset=1 — the React app reads this and wipes
+REM    localStorage before mounting. We don't add `&t=...` because `&` is
+REM    a cmd command separator and quoting becomes painful.
+start /b "" cmd /c "timeout /t 4 /nobreak >nul && start http://localhost:8000/?reset=1"
 
 REM ── 8. Run uvicorn in foreground so Ctrl+C stops the whole stack ────────
 .venv\Scripts\python -m uvicorn backend.main:app --port 8000 --host 127.0.0.1

@@ -170,7 +170,11 @@ def health():
 
 
 @app.post("/api/predict")
-async def predict(file: UploadFile = File(...), gradcam: bool = True):
+async def predict(
+    file: UploadFile = File(...),
+    gradcam: bool = True,
+    tta: bool = True,
+):
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(
             status_code=400,
@@ -197,7 +201,7 @@ async def predict(file: UploadFile = File(...), gradcam: bool = True):
         gradcam_b64 = None
         model_kind = "demo"
     else:
-        result = model.predict(pil_img)
+        result = model.predict(pil_img, use_tta=tta)
         pred_class = result.predicted_class
         confidence = result.confidence
         probabilities = result.probabilities

@@ -17,6 +17,26 @@ const CONFIDENCE_THRESHOLD = 70
 const USER_STORAGE_KEY = 'brainscan_user'
 const HISTORY_KEY      = 'brainscan_history'
 
+// When the URL has ?reset=1 (set by start.bat for a fresh launch),
+// wipe localStorage and strip the query so the page reloads clean.
+function applyResetFlag() {
+  try {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('reset') === '1') {
+      localStorage.clear()
+      sessionStorage.clear()
+      params.delete('reset')
+      params.delete('t')
+      const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '')
+      window.history.replaceState({}, '', clean)
+      console.info('[NeuroVista] Fresh session — localStorage cleared.')
+      return true
+    }
+  } catch {}
+  return false
+}
+applyResetFlag()
+
 export default function App() {
   const [user, setUser]       = useState(null)
   const [activeNav, setActiveNav] = useState('dashboard')

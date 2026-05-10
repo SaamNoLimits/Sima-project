@@ -109,13 +109,35 @@ class BrainTumorModel:
     def _predict_fastai(self, pil_img: Image.Image) -> PredictResult:
         # We bypass learn.predict() because fasttransform 0.0.2 has a bug in
         # the transform pipeline. Instead, run the underlying torch model
-        # directly with manual ImageNet preprocessing.
-        import torch  # noqa: F401  (lazy)
+        # directly with the EXACT preprocessing fastai used at training:
+        #
+        # 1. PIL: resize-with-CROP (bilinear) so the shorter side matches the
+        #    target, then center-crop to (224, 224). This is fastai's
+        #    `Resize(size=(224,224), method='crop', resample=BILINEAR)`.
+        # 2. div by 255 (matches `IntToFloatTensor`)
+        # 3. ImageNet normalization (matches fastai's `Normalize.from_stats(*imagenet_stats)`)
+        #
+        # Using LANCZOS+stretch here was producing wrong predictions on
+        # non-square MRIs. Fixed: use BILINEAR + center-crop.
+        import torch  # noqa: F401
 
         IMAGENET_MEAN = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1)
         IMAGENET_STD  = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1)
+        TARGET = 224
 
-        img = pil_img.convert("RGB").resize((224, 224), Image.LANCZOS)
+        img = pil_img.convert("RGB")
+        w, h = img.size
+
+        # Step 1: scale so shorter side >= TARGET (preserve aspect ratio)
+        scale = max(TARGET / w, TARGET / h)
+        new_w, new_h = int(round(w * scale)), int(round(h * scale))
+        img = img.resize((new_w, new_h), Image.BILINEAR)
+
+        # Step 2: center-crop to TARGET x TARGET
+        left = (new_w - TARGET) // 2
+        top  = (new_h - TARGET) // 2
+        img  = img.crop((left, top, left + TARGET, top + TARGET))
+
         arr = np.array(img, dtype=np.float32) / 255.0
         t   = torch.from_numpy(arr).permute(2, 0, 1).unsqueeze(0)  # 1×3×224×224
         t   = (t - IMAGENET_MEAN) / IMAGENET_STD

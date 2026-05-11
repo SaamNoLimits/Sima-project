@@ -10,6 +10,9 @@ REM       (user, history, all cached state) so the session is brand new
 REM
 REM  Pre-req : Python 3.10+  (https://python.org — tick "Add Python to PATH")
 REM  Stack   : single port 8000 (FastAPI serves UI + API).
+REM  Model   : ResNet34 (fastai .pkl, ~83 MB) shipped in outputs\models\.
+REM            kmeans_pipeline.pkl (optional) adds an unsupervised second
+REM            opinion. No model file -> the app runs in DEMO mode.
 REM ════════════════════════════════════════════════════════════════════════
 
 setlocal enabledelayedexpansion
@@ -74,6 +77,20 @@ if not exist "frontend\dist\index.html" (
     echo [OK] Built UI present in frontend\dist\.
 )
 
+REM ── 7. Sanity-check the trained model ───────────────────────────────────
+if not exist "outputs\models\brain_tumor_model.pkl" (
+    echo [WARN] outputs\models\brain_tumor_model.pkl is MISSING ^(~83 MB^).
+    echo        The app will start in DEMO mode ^(random predictions^).
+    echo        Fix: re-clone with `git clone` ^(not a ZIP download^) — the
+    echo        .pkl is a normal git-tracked file ^(no LFS^), so a real clone
+    echo        brings it along.
+) else (
+    echo [OK] Model present: outputs\models\brain_tumor_model.pkl ^(ResNet34, fastai^).
+)
+if exist "outputs\models\kmeans_pipeline.pkl" (
+    echo [OK] K-means pipeline present ^(secondary unsupervised opinion^).
+)
+
 echo.
 echo ============================================================
 echo   Launching NeuroVista on  http://localhost:8000
@@ -87,11 +104,11 @@ echo.
 echo   To STOP : press Ctrl+C in this window, or close it.
 echo.
 
-REM ── 7. Open browser AFTER backend has bound the port (4 s delay) ────────
+REM ── 8. Open browser AFTER backend has bound the port (4 s delay) ────────
 REM    Single query param ?reset=1 — the React app reads this and wipes
 REM    localStorage before mounting. We don't add `&t=...` because `&` is
 REM    a cmd command separator and quoting becomes painful.
 start /b "" cmd /c "timeout /t 4 /nobreak >nul && start http://localhost:8000/?reset=1"
 
-REM ── 8. Run uvicorn in foreground so Ctrl+C stops the whole stack ────────
+REM ── 9. Run uvicorn in foreground so Ctrl+C stops the whole stack ────────
 .venv\Scripts\python -m uvicorn backend.main:app --port 8000 --host 127.0.0.1

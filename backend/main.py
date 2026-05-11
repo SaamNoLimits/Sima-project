@@ -15,6 +15,7 @@ import numpy as np
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -216,44 +217,59 @@ async def predict(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Could not decode image: {e}")
 
-    model = get_model()
-    demo_mode = model is None
+    # `get_model()` (first call lazy-loads the 83 MB .pkl), `model.predict()`
+    # (4× TTA forward passes on CPU), `_gradcam_base64()` and `km.predict()`
+    # are all SYNCHRONOUS and CPU-heavy. Running them directly in this async
+    # handler would freeze the whole event loop for the duration of one
+    # prediction (even /api/health would hang). Offload to a threadpool.
 
-    if demo_mode:
-        # Sample a peaky Dirichlet so one class dominates, then take argmax
-        # (keeps predicted_class consistent with the probability distribution).
-        raw = np.random.dirichlet(np.ones(len(CLASSES)) * 0.3)
-        probabilities = {c: float(p) for c, p in zip(CLASSES, raw)}
-        pred_class = max(probabilities, key=probabilities.get)
-        confidence = probabilities[pred_class]
-        info = CLASS_INFO[pred_class]
-        gradcam_b64 = None
-        model_kind = "demo"
-    else:
-        result = model.predict(pil_img, use_tta=tta)
-        pred_class = result.predicted_class
-        confidence = result.confidence
-        probabilities = result.probabilities
-        info = result.info
-        gradcam_b64 = _gradcam_base64(model, pil_img, pred_class) if gradcam else None
-        model_kind = model.kind
-
-    # ── Secondary unsupervised opinion: K-means cluster (if pipeline present) ──
-    kmeans_out = None
-    km = get_kmeans()
-    if km is not None:
-        try:
-            kp = km.predict(pil_img)
-            kmeans_out = {
-                "cluster":           kp["cluster"],
-                "majority_class":    kp["majority_class"],
-                "majority_label_fr": CLASS_INFO.get(kp["majority_class"], {}).get("label_fr", kp["majority_class"]),
-                "agrees_with_cnn":   (kp["majority_class"] == pred_class) if not demo_mode else None,
-                "distances":         kp["distances"],
-                "ari":               km.metrics.get("adjusted_rand_index"),
+    def _run_inference():
+        model = get_model()
+        demo = model is None
+        if demo:
+            raw = np.random.dirichlet(np.ones(len(CLASSES)) * 0.3)
+            probs = {c: float(p) for c, p in zip(CLASSES, raw)}
+            pc = max(probs, key=probs.get)
+            return {
+                "demo": True, "model_kind": "demo",
+                "pred_class": pc, "confidence": probs[pc],
+                "probabilities": probs, "info": CLASS_INFO[pc],
+                "gradcam_b64": None, "kmeans": None,
             }
-        except Exception as e:  # never let K-means break the main prediction
-            print(f"[backend] K-means predict failed: {e}")
+        result = model.predict(pil_img, use_tta=tta)
+        gc_b64 = _gradcam_base64(model, pil_img, result.predicted_class) if gradcam else None
+        # K-means secondary opinion (best-effort; never breaks the main result)
+        km_out = None
+        km = get_kmeans()
+        if km is not None:
+            try:
+                kp = km.predict(pil_img)
+                km_out = {
+                    "cluster":           kp["cluster"],
+                    "majority_class":    kp["majority_class"],
+                    "majority_label_fr": CLASS_INFO.get(kp["majority_class"], {}).get("label_fr", kp["majority_class"]),
+                    "agrees_with_cnn":   kp["majority_class"] == result.predicted_class,
+                    "distances":         kp["distances"],
+                    "ari":               km.metrics.get("adjusted_rand_index"),
+                }
+            except Exception as e:
+                print(f"[backend] K-means predict failed: {e}")
+        return {
+            "demo": False, "model_kind": model.kind,
+            "pred_class": result.predicted_class, "confidence": result.confidence,
+            "probabilities": result.probabilities, "info": result.info,
+            "gradcam_b64": gc_b64, "kmeans": km_out,
+        }
+
+    r = await run_in_threadpool(_run_inference)
+    demo_mode    = r["demo"]
+    model_kind   = r["model_kind"]
+    pred_class   = r["pred_class"]
+    confidence   = r["confidence"]
+    probabilities= r["probabilities"]
+    info         = r["info"]
+    gradcam_b64  = r["gradcam_b64"]
+    kmeans_out   = r["kmeans"]
 
     return {
         "demo_mode": demo_mode,

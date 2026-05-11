@@ -1,7 +1,7 @@
 import { CLASS_ORDER, CLASS_META, severityClass, severityBadge } from '../classInfo'
 
 export default function ResultCard({ result, threshold = 70 }) {
-  const { confidence, probabilities, info, demo_mode, gradcam_png_b64 } = result
+  const { confidence, probabilities, info, demo_mode, gradcam_png_b64, kmeans } = result
   const conf = confidence * 100
   const uncertain = conf < threshold
 
@@ -71,6 +71,34 @@ export default function ResultCard({ result, threshold = 70 }) {
             src={`data:image/png;base64,${gradcam_png_b64}`}
             alt="Grad-CAM overlay"
           />
+        </div>
+      )}
+
+      {kmeans && (
+        <div className="card kmeans-card">
+          <h3>
+            <span className="material-symbols-outlined sm" style={{ verticalAlign: '-3px', marginRight: 6 }}>scatter_plot</span>
+            Avis non-supervisé — K-means
+          </h3>
+          <p>
+            Regroupement automatique sans étiquettes (k = 4). Comparé ici à la
+            prédiction du réseau de neurones — concordance ≈ {kmeans.ari != null ? (kmeans.ari * 100).toFixed(0) : '?'}% (ARI).
+          </p>
+          <div className="kmeans-row">
+            <span className="kmeans-pill">Cluster #{kmeans.cluster}</span>
+            <span className="kmeans-arrow">→</span>
+            <span className="kmeans-pill">classe majoritaire&nbsp;: <strong>{kmeans.majority_label_fr}</strong></span>
+            {kmeans.agrees_with_cnn === true && (
+              <span className="status-pill ok"><span className="material-symbols-outlined sm">check</span>concorde avec le CNN</span>
+            )}
+            {kmeans.agrees_with_cnn === false && (
+              <span className="status-pill warn"><span className="material-symbols-outlined sm">close</span>diffère du CNN</span>
+            )}
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--on-surface-variant)', marginTop: '0.75rem', marginBottom: 0 }}>
+            ⓘ K-means s'appuie sur 12 descripteurs simples (intensité, contraste, texture…).
+            Sa séparation des classes est limitée — c'est ce qui justifie l'usage d'un CNN.
+          </p>
         </div>
       )}
 

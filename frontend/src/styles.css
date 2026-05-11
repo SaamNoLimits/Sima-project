@@ -858,6 +858,22 @@ a:hover { color: var(--primary-container); }
 }
 .disclaimer strong { color: #78350F; }
 
+/* K-means secondary-opinion card */
+.kmeans-card { /* uses .card */ }
+.kmeans-card h3 { font-size: var(--fs-headline); color: var(--primary); font-weight: 600; margin-bottom: 0.4rem; }
+.kmeans-card p  { color: var(--on-surface-variant); margin-bottom: 1rem; }
+.kmeans-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.kmeans-pill {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-container);
+  font-size: 13px; color: var(--on-surface);
+  font-family: var(--font-mono);
+}
+.kmeans-pill strong { font-family: var(--font-sans); font-weight: 700; color: var(--primary); }
+.kmeans-arrow { color: var(--on-surface-variant); font-weight: 700; }
+
 /* Error box */
 .error-box {
   background: var(--error-container);

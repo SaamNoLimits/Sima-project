@@ -54,7 +54,10 @@ def _resolve_model_path() -> Optional[str]:
         if p.is_file():
             return str(p)
 
+    # Fallback: first supported file — but never the K-means bundle.
     for p in sorted(MODELS_DIR.iterdir()):
+        if p.name == "kmeans_pipeline.pkl":
+            continue
         if p.is_file() and p.suffix.lower() in SUPPORTED_EXTS:
             return str(p)
 
@@ -82,6 +85,32 @@ _model: Optional[BrainTumorModel] = None
 _model_error: Optional[str] = None
 _model_path: Optional[str] = None
 _load_attempted = False
+
+# K-means pipeline (optional secondary opinion) — lazy-loaded on first use
+_kmeans = None
+_kmeans_error: Optional[str] = None
+_kmeans_attempted = False
+
+
+def get_kmeans():
+    """Returns the KMeansPipeline if outputs/models/kmeans_pipeline.pkl exists,
+    else None (the feature is simply omitted from /api/predict)."""
+    global _kmeans, _kmeans_error, _kmeans_attempted
+    if _kmeans_attempted:
+        return _kmeans
+    _kmeans_attempted = True
+    try:
+        from backend.kmeans_loader import KMeansPipeline
+        _kmeans = KMeansPipeline.load()
+        if _kmeans is None:
+            _kmeans_error = "kmeans_pipeline.pkl not found in outputs/models/"
+        else:
+            print(f"[backend] K-means pipeline loaded (k={_kmeans.kmeans.n_clusters}, "
+                  f"ARI={_kmeans.metrics.get('adjusted_rand_index')})")
+    except Exception as e:
+        _kmeans_error = f"{type(e).__name__}: {e}"
+        print(f"[backend] K-means load failed: {_kmeans_error}")
+    return _kmeans
 
 
 def get_model() -> Optional[BrainTumorModel]:
@@ -209,6 +238,23 @@ async def predict(
         gradcam_b64 = _gradcam_base64(model, pil_img, pred_class) if gradcam else None
         model_kind = model.kind
 
+    # ── Secondary unsupervised opinion: K-means cluster (if pipeline present) ──
+    kmeans_out = None
+    km = get_kmeans()
+    if km is not None:
+        try:
+            kp = km.predict(pil_img)
+            kmeans_out = {
+                "cluster":           kp["cluster"],
+                "majority_class":    kp["majority_class"],
+                "majority_label_fr": CLASS_INFO.get(kp["majority_class"], {}).get("label_fr", kp["majority_class"]),
+                "agrees_with_cnn":   (kp["majority_class"] == pred_class) if not demo_mode else None,
+                "distances":         kp["distances"],
+                "ari":               km.metrics.get("adjusted_rand_index"),
+            }
+        except Exception as e:  # never let K-means break the main prediction
+            print(f"[backend] K-means predict failed: {e}")
+
     return {
         "demo_mode": demo_mode,
         "model_kind": model_kind,
@@ -224,6 +270,7 @@ async def predict(
         },
         "image_size": list(pil_img.size),
         "gradcam_png_b64": gradcam_b64,
+        "kmeans": kmeans_out,
     }
 
 
